@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -53,15 +54,25 @@ const styles = StyleSheet.create({
 });
 
 export default function AppForm({ navigation }) {
-
     const [descricao, setDescricao] = useState('');
     const [quantidade, setQuantidade] = useState('');
 
     function handleDescriptionChange(descricao) { setDescricao(descricao); }
     function handleQuantityChange(quantidade) { setQuantidade(quantidade); }
-    function handleButtonPress() {
-        console.log({ id: new Date().getTime(), descricao, quantidade });
-        navigation.navigate("AppList");
+
+    async function handleButtonPress() {
+        const listItem = { id: new Date().getTime(), descricao, quantidade: parseInt(quantidade) };
+        let savedItems = [];
+        const response = await AsyncStorage.getItem('items');
+
+        if (response) savedItems = JSON.parse(response);
+        savedItems.push(listItem);
+
+        await AsyncStorage.setItem('items', JSON.stringify(savedItems));
+        navigation.navigate("AppList", listItem);
+
+        console.log({ id: new Date().getTime(), descricao, quantidade }); 
+        console.log(savedItems);
     }
 
     return (
