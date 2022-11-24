@@ -1,5 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+function getItems(){
+    return AsyncStorage.getItem('items')
+            .then(response => {
+                if(response)
+                    return Promise.resolve(JSON.parse(response));
+                else
+                    return Promise.resolve([]);
+            })
+}
+
 async function saveItem(listItem){
     listItem.id = new Date().getTime();
     let savedItems = [];
@@ -14,5 +24,6 @@ async function saveItem(listItem){
 }
 
 module.exports = {
-    saveItem
+	saveItem,
+	getItems
 }
