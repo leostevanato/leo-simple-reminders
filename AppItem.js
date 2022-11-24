@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { getItem } from './Database';
 
 const styles = StyleSheet.create({
     container: {
@@ -50,6 +51,11 @@ const styles = StyleSheet.create({
 });
 
 export default function AppItem(props) {
+    async function handleEditPress() {
+        const item = await getItem(props.id);
+        props.navigation.navigate("AppForm", item);
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.textItem}>{props.item}</Text>
@@ -57,7 +63,9 @@ export default function AppItem(props) {
                 <TouchableOpacity style={styles.deleteButton} >
                     <Text style={styles.buttonText}>X</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.editButton} >
+                <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={handleEditPress}>
                     <Text style={styles.buttonText}>Editar</Text>
                 </TouchableOpacity>
             </View>

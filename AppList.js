@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import AppItem from './AppItem';
-import Database from './Database';
+import { getItems } from './Database';
 
 const styles = StyleSheet.create({
     container: {
@@ -37,7 +37,7 @@ export default function AppList({ route, navigation }) {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        Database.getItems().then(items => setItems(items));
+        getItems().then(items => setItems(items));
     }, [route]);
 
     return (
@@ -48,7 +48,7 @@ export default function AppList({ route, navigation }) {
                 style={styles.scrollContainer}
                 contentContainerStyle={styles.itemsContainer}>
                 {items.map(item => {
-                    return <AppItem key={item.id} id={item.id} item={item.quantidade + '  de ' + item.descricao} />
+                    return <AppItem key={item.id} id={item.id} item={item.quantidade + '  de ' + item.descricao} navigation={navigation} />
                 })}
             </ScrollView>
         </View>
