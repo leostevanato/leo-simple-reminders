@@ -57,6 +57,13 @@ export default function AppForm({ route, navigation }) {
     const id = route.params ? route.params.id : undefined;
     const [descricao, setDescricao] = useState('');
     const [quantidade, setQuantidade] = useState('');
+    const [saveEnabled, setSaveEnabled] = useState('disabled');
+
+    useEffect(() => {
+        navigation.addListener('blur', () => {
+            clearForm();
+        });
+    }, [navigation]);
     
     useEffect(() => {
         if (!route.params) return;
@@ -64,16 +71,47 @@ export default function AppForm({ route, navigation }) {
         setQuantidade(route.params.quantidade.toString());
     }, [route]);
 
-    function handleDescriptionChange(descricao) { setDescricao(descricao); }
-    function handleQuantityChange(quantidade) { setQuantidade(quantidade); }
+    useEffect(() => {
+        handleSaveEnabled();
+    }, [descricao, quantidade]);
+
+    function handleSaveEnabled() {
+        if (descricao.trim() === '' || (quantidade === '' || isNaN(quantidade) || quantidade <= 0)) {
+            setSaveEnabled('disabled');
+        } else {
+            setSaveEnabled('');
+        }
+    }
+
+    function handleDescriptionChange(descricao) {
+        setDescricao(descricao);
+    }
+
+    function handleQuantityChange(quantidade) {
+        setQuantidade(quantidade);
+    }
+
+    function clearForm() {
+        setDescricao('');
+        setQuantidade('');
+    }
 
     async function handleSavePress() {
         const listItem = { descricao, quantidade: parseInt(quantidade) };
 
+        console.log(listItem)
+
+
         saveItem(listItem, id)
-            .then(response => navigation.navigate("AppList", listItem));
+            .then(response => {
+                navigation.navigate("AppList", listItem);
+            });
     }
-    
+
+    function handleCancelPress() {
+        navigation.navigate("AppList");
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Item para comprar</Text>
@@ -91,8 +129,11 @@ export default function AppForm({ route, navigation }) {
                     keyboardType={'numeric'}
                     clearButtonMode="always"
                     value={quantidade.toString()} />
-                <Pressable style={styles.button} onPress={handleSavePress}>
+                <Pressable style={styles.button} onPress={handleSavePress} disabled={saveEnabled}>
                     <Text style={styles.buttonText}>Salvar</Text>
+                </Pressable>
+                <Pressable style={styles.button} onPress={handleCancelPress}>
+                    <Text style={styles.buttonText}>Cancelar</Text>
                 </Pressable>
             </View>
             <StatusBar style="light" />
