@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { deleteItem, getItem } from './Database';
 
 const styles = StyleSheet.create({
@@ -80,16 +80,16 @@ export default function AppItem(props) {
         <View style={styles.container}>
             <Text style={styles.textItem}>{props.item}</Text>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity
+                <Pressable
                     style={styles.deleteButton}
                     onPress={handleDeletePress}>
                     <Text style={styles.buttonText}>X</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
+                </Pressable>
+                <Pressable
                     style={styles.editButton}
                     onPress={handleEditPress}>
                     <Text style={styles.buttonText}>Editar</Text>
-                </TouchableOpacity>
+                </Pressable>
             </View>
         </View>
     );

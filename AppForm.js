@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { saveItem } from './Database';
 
 const styles = StyleSheet.create({
@@ -57,7 +57,7 @@ export default function AppForm({ route, navigation }) {
     const id = route.params ? route.params.id : undefined;
     const [descricao, setDescricao] = useState('');
     const [quantidade, setQuantidade] = useState('');
-
+    
     useEffect(() => {
         if (!route.params) return;
         setDescricao(route.params.descricao);
@@ -67,12 +67,13 @@ export default function AppForm({ route, navigation }) {
     function handleDescriptionChange(descricao) { setDescricao(descricao); }
     function handleQuantityChange(quantidade) { setQuantidade(quantidade); }
 
-    async function handleButtonPress() {
+    async function handleSavePress() {
         const listItem = { descricao, quantidade: parseInt(quantidade) };
+
         saveItem(listItem, id)
             .then(response => navigation.navigate("AppList", listItem));
     }
-
+    
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Item para comprar</Text>
@@ -90,9 +91,9 @@ export default function AppForm({ route, navigation }) {
                     keyboardType={'numeric'}
                     clearButtonMode="always"
                     value={quantidade.toString()} />
-                <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+                <Pressable style={styles.button} onPress={handleSavePress}>
                     <Text style={styles.buttonText}>Salvar</Text>
-                </TouchableOpacity>
+                </Pressable>
             </View>
             <StatusBar style="light" />
         </View>
