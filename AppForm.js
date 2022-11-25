@@ -69,7 +69,7 @@ export default function AppForm({ route, navigation }) {
 
     async function handleButtonPress() {
         const listItem = { descricao, quantidade: parseInt(quantidade) };
-        saveItem(listItem)
+        saveItem(listItem, id)
             .then(response => navigation.navigate("AppList", listItem));
     }
 
