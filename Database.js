@@ -26,13 +26,20 @@ async function saveItem(listItem, id) {
 	else {
 		savedItems.push(listItem);
 	}
-	
+
+	return AsyncStorage.setItem('items', JSON.stringify(savedItems));
+}
+
+async function deleteItem(id) {
+	let savedItems = await getItems();
+	const index = await savedItems.findIndex(item => item.id === id);
+	savedItems.splice(index, 1);
 	return AsyncStorage.setItem('items', JSON.stringify(savedItems));
 }
 
 export {
 	saveItem,
 	getItems,
-	getItem
+	getItem,
+	deleteItem
 };
-

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { getItem } from './Database';
+import { deleteItem, getItem } from './Database';
 
 const styles = StyleSheet.create({
     container: {
@@ -51,6 +51,26 @@ const styles = StyleSheet.create({
 });
 
 export default function AppItem(props) {
+    function handleDeletePress(){ 
+        Alert.alert(
+            "Atenção",
+            "Você tem certeza que deseja excluir este item?",
+            [
+                {
+                text: "Não",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+                },
+                { text: "Sim", onPress: () => {
+                        deleteItem(props.id)
+                            .then(response => props.navigation.navigate("AppList", {id: props.id}));
+                    }
+                }
+            ],
+            { cancelable: false }
+            );
+    }
+    
     async function handleEditPress() {
         const item = await getItem(props.id);
         props.navigation.navigate("AppForm", item);
@@ -60,7 +80,9 @@ export default function AppItem(props) {
         <View style={styles.container}>
             <Text style={styles.textItem}>{props.item}</Text>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.deleteButton} >
+                <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={handleDeletePress}>
                     <Text style={styles.buttonText}>X</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
