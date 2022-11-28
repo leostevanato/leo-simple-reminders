@@ -30,6 +30,8 @@ const styles = StyleSheet.create({
         height: 60,
         backgroundColor: '#fff',
         borderRadius: 10,
+        borderColor: '#959595',
+        borderWidth: 1,
         paddingHorizontal: 24,
         fontSize: 16,
         alignItems: 'stretch'
@@ -129,12 +131,14 @@ export default function AppForm({ route, navigation }) {
                     style={styles.input}
                     onChangeText={handleDescriptionChange}
                     placeholder="O que está faltando em casa?"
+                    placeholderTextColor="#959595"
                     clearButtonMode="always"
                     value={descricao} />
                 <TextInput
                     style={styles.input}
                     onChangeText={handleQuantityChange}
                     placeholder="Digite a quantidade"
+                    placeholderTextColor="#959595"
                     keyboardType={'numeric'}
                     clearButtonMode="always"
                     value={quantidade.toString()} />
