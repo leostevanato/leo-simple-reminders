@@ -59,7 +59,7 @@ export default function AppForm({ route, navigation }) {
     const id = route.params ? route.params.id : undefined;
     const [descricao, setDescricao] = useState('');
     const [quantidade, setQuantidade] = useState('');
-    const [saveEnabled, setSaveEnabled] = useState('disabled');
+    const [saveDisabled, setSaveDisabled] = useState(true);
     const [disabledStyle, setDisabledStyle] = useState({ opacity: 1 });
 
     useEffect(() => {
@@ -79,18 +79,18 @@ export default function AppForm({ route, navigation }) {
     }, [descricao, quantidade]);
 
     useEffect(() => {
-        if (saveEnabled === 'disabled') {
+        if (saveDisabled) {
             setDisabledStyle({ opacity: 0.6 });
         } else {
             setDisabledStyle({ opacity: 1 });
         }
-    }, [saveEnabled]);
+    }, [saveDisabled]);
 
     function handleSaveEnabled() {
         if (descricao.trim() === '' || (quantidade === '' || isNaN(quantidade) || quantidade <= 0)) {
-            setSaveEnabled('disabled');
+            setSaveDisabled(true);
         } else {
-            setSaveEnabled('');
+            setSaveDisabled(false);
         }
     }
 
@@ -142,7 +142,7 @@ export default function AppForm({ route, navigation }) {
                     keyboardType={'numeric'}
                     clearButtonMode="always"
                     value={quantidade.toString()} />
-                <Pressable style={[styles.button, disabledStyle]} onPress={handleSavePress} disabled={saveEnabled}>
+                <Pressable style={[styles.button, disabledStyle]} onPress={handleSavePress} disabled={saveDisabled}>
                     <Text style={styles.buttonText}>Salvar</Text>
                 </Pressable>
                 <Pressable style={styles.button} onPress={handleCancelPress}>
