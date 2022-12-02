@@ -63,7 +63,15 @@ export default function AppForm({ route, navigation }) {
     const [disabledStyle, setDisabledStyle] = useState({ opacity: 1 });
 
     useEffect(() => {
+        navigation.addListener('focus', () => {
+            console.log("Focus id: ", id);
+            console.log("Focus route.params: ", route.params);
+        });
+
         navigation.addListener('blur', () => {
+            console.log("Blur id: ", id);
+            console.log("Blur route.params: ", route.params);
+
             clearForm();
         });
     }, [navigation]);
